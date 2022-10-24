@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 require 'tic_tac_toe_wp'
-# require_relative '../lib/game_logic'
 require_relative '../lib/user_interface'
-# require_relative '../lib/player'
 
 class GameController
   def initialize
