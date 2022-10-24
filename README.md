@@ -1,10 +1,11 @@
 # Ruby Tic-Tac-Toe Starter Project - Will Peake
 
-This is a Tic-Tac-Toe (AKA Knoughts & Crosses here in the UK) game written in Ruby using TDD, making use of the `rspec` and `guard` gems.
+This is a Tic-Tac-Toe (AKA Knoughts & Crosses here in the UK) game which uses my `tic_tac_toe_wp` gem to provide the game logic.
 
 ## Setup
 
 1. Ensure Ruby is installed on your machine with a package manager of your choice
+1. You will need to install the `tic_tac_toe_wp` rubygem on your machine locally, as it is not published to rubygems.org. Instructions can be found in the `tic_tac_toe_wp` gem repo: [github.com/wrlpeake/tic_tac_toe_gem_wp](https://github.com/wrlpeake/tic_tac_toe_gem_wp)
 1. Run `bundle install`
 
 ## How to Play
