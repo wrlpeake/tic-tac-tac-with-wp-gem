@@ -3,8 +3,8 @@
 require_relative '../lib/game_controller'
 
 class GameStarter
-  def initialize
-    @game_controller = GameController.new
+  def initialize(player_one_marker, player_two_marker)
+    @game_controller = GameController.new(player_one_marker, player_two_marker)
   end
 
   def start_tic_tac_toe_game

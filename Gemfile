@@ -7,4 +7,4 @@ gem 'rspec'
 gem 'rubocop', require: false
 gem 'simplecov', require: false, group: :test
 
-gem 'tic_tac_toe_wp', '~> 0.1.1'
+gem 'tic_tac_toe_wp', '~> 0.1.2'

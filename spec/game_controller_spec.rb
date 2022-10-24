@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 
+require 'tic_tac_toe_wp'
 require_relative '../lib/game_controller'
 require 'stringio'
 
 describe GameController do
   before(:each) do
-    @game_controller = GameController.new
+    player_one_marker = 'X'
+    player_two_marker = 'O'
+    @game_controller = GameController.new(player_one_marker, player_two_marker)
+    @player_one = @game_controller.get_player_one
+    @player_two = @game_controller.get_player_two
   end
 
   it 'scenario: can play a complete computer v computer game' do
@@ -121,7 +126,7 @@ describe GameController do
   end
 
   it 'make_human_turn should display the validated player selection after marking the game board' do
-    @player_one = Player.new('X')
+    # @player_one = Player.new('X')
     human_selection = 7
     validated_player_selection_message = /Player #{@player_one.marker}, has selected: #{human_selection}/
 
@@ -133,7 +138,7 @@ describe GameController do
   end
 
   it 'make_human_turn should request input again if the position is already taken' do
-    @player_two = Player.new('O')
+    # @player_two = Player.new('O')
     first_selection = 7
     repeated_selection = 7
     second_selection = 9
@@ -149,7 +154,7 @@ describe GameController do
   end
 
   it 'make_human_turn should request input again if the input is not an integer between 1-9' do
-    @player_two = Player.new('O')
+    # @player_two = Player.new('O')
     invalid_input = 'foobar'
     valid_input = 4
     invalid_input_message = /Error: not an integer between 1 and 9. Please choose again./
