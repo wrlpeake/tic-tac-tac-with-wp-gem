@@ -126,7 +126,6 @@ describe GameController do
   end
 
   it 'make_human_turn should display the validated player selection after marking the game board' do
-    # @player_one = Player.new('X')
     human_selection = 7
     validated_player_selection_message = /Player #{@player_one.marker}, has selected: #{human_selection}/
 
@@ -138,7 +137,6 @@ describe GameController do
   end
 
   it 'make_human_turn should request input again if the position is already taken' do
-    # @player_two = Player.new('O')
     first_selection = 7
     repeated_selection = 7
     second_selection = 9
@@ -154,7 +152,6 @@ describe GameController do
   end
 
   it 'make_human_turn should request input again if the input is not an integer between 1-9' do
-    # @player_two = Player.new('O')
     invalid_input = 'foobar'
     valid_input = 4
     invalid_input_message = /Error: not an integer between 1 and 9. Please choose again./
