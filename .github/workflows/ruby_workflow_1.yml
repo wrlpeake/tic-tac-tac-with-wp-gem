@@ -17,8 +17,9 @@ jobs:
         uses: ruby/setup-ruby@359bebbc29cbe6c87da6bc9ea3bc930432750108
         with:
           ruby-version: '3.1'
-      - name: Install dependencies
+      - name: Install gem
         run: gem install tic_tac_toe_wp-0.1.2.gem
+      - name: Install dependencies
         run: bundle install
       - name: Run tests
         run: bundle exec rspec
