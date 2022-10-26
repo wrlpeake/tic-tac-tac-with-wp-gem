@@ -4,16 +4,15 @@ require 'tic_tac_toe_wp'
 require_relative '../lib/user_interface'
 
 class GameController
-  def initialize(player_one_marker, player_two_marker)
-    @game_logic = TicTacToeWP::GameLogic.new(player_one_marker, player_two_marker)
+  def initialize
     @user_interface = UserInterface.new
-    @player_one = @game_logic.create_player_one(player_one_marker)
-    @player_two = @game_logic.create_player_two(player_two_marker)
+    @game_logic = TicTacToeWP::GameLogic.new('X', 'O')
+    @player_one = @game_logic.create_player('X')
+    @player_two = @game_logic.create_player('O')
   end
 
   def display_start_game_text
-    @user_interface.display_welcome_message
-    @user_interface.display_instructions
+    @user_interface.display_instructions(@player_one.marker, @player_two.marker)
     @user_interface.display_game_board(@game_logic.get_game_board)
   end
 
@@ -116,6 +115,12 @@ class GameController
   end
 
   def load_game
+    @user_interface.display_welcome_message
+    player_one_marker = get_player_marker('one')
+    player_two_marker = get_player_two_marker(player_one_marker)
+    @game_logic = TicTacToeWP::GameLogic.new(player_one_marker, player_two_marker)
+    @player_one = @game_logic.create_player(player_one_marker)
+    @player_two = @game_logic.create_player(player_two_marker)
     display_start_game_text
     case get_game_type
     when 1
@@ -135,5 +140,32 @@ class GameController
 
   def get_player_two
     @player_two
+  end
+
+  def get_marker_selection(player_one_or_two)
+    @user_interface.request_player_marker(player_one_or_two)
+  end
+
+  def get_player_marker(player_one_or_two)
+    marker = get_marker_selection(player_one_or_two)
+    if @game_logic.validate_marker?(marker) == false
+      @user_interface.display_marker_error_message
+      get_player_marker(player_one_or_two)
+    else
+      @user_interface.display_validated_marker_message(player_one_or_two, marker)
+      marker
+    end
+  end
+
+  def get_player_two_marker(player_one_marker)
+    player = 'two'
+    marker = get_player_marker(player)
+    if @game_logic.duplicate_marker?(player_one_marker, marker) == true
+      @user_interface.display_duplicate_marker_error_message
+      get_player_two_marker(player_one_marker)
+    else
+      @user_interface.display_validated_marker_message(player, marker)
+      marker
+    end
   end
 end

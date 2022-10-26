@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 require_relative '../lib/game_controller'
+require_relative '../lib/user_interface'
 
 class GameStarter
-  def initialize(player_one_marker, player_two_marker)
-    @game_controller = GameController.new(player_one_marker, player_two_marker)
+  def initialize
+    @game_controller = GameController.new
   end
 
   def start_tic_tac_toe_game
