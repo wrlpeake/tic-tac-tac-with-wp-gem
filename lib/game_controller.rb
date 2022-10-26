@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require ('tic_tac_toe_wp')
+require 'tic_tac_toe_wp'
 require_relative '../lib/user_interface'
 
 class GameController
