@@ -18,6 +18,7 @@ jobs:
         with:
           ruby-version: '3.1'
       - name: Install dependencies
+        run: gem install tic_tac_toe_wp-0.1.2.gem
         run: bundle install
       - name: Run tests
         run: bundle exec rspec
