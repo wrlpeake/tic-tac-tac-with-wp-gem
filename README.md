@@ -5,7 +5,7 @@ This is a Tic-Tac-Toe (AKA Knoughts & Crosses here in the UK) game which uses my
 ## Setup
 
 1. Ensure Ruby is installed on your machine with a package manager of your choice
-1. You will need to install the `tic_tac_toe_wp` rubygem on your machine locally, as it is not published to rubygems.org. Instructions can be found in the `tic_tac_toe_wp` gem repo: [github.com/wrlpeake/tic_tac_toe_gem_wp](https://github.com/wrlpeake/tic_tac_toe_gem_wp)
+1. Run `bundle add tic_tac_toe_wp` to install the `tic_tac_toe_gem` which contains the game logic.
 1. Run `bundle install`
 
 ## How to Play
