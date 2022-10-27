@@ -5,15 +5,16 @@ require_relative '../lib/user_interface'
 
 class GameController
   def initialize
-    @game_logic = TicTacToeWP::GameLogic.new
+    @default_marker_x = 'X'
+    @default_marker_o = 'O'
     @user_interface = UserInterface.new
-    @player_one = @game_logic.create_player('X')
-    @player_two = @game_logic.create_player('O')
+    @game_logic = TicTacToeWP::GameLogic.new(@default_marker_x, @default_marker_o)
+    @player_one = @game_logic.create_player(@default_marker_x)
+    @player_two = @game_logic.create_player(@default_marker_o)
   end
 
   def display_start_game_text
-    @user_interface.display_welcome_message
-    @user_interface.display_instructions
+    @user_interface.display_instructions(@player_one.marker, @player_two.marker)
     @user_interface.display_game_board(@game_logic.get_game_board)
   end
 
@@ -37,8 +38,7 @@ class GameController
   end
 
   def make_human_turn(player)
-    selected_cell = get_human_selection(player).to_i
-    player_selection = player.get_move(selected_cell)
+    player_selection = get_human_selection(player).to_i
     case @game_logic.validate_human_player_selection(player_selection)
     when 1
       @user_interface.display_wrong_integer_error_message
@@ -54,8 +54,7 @@ class GameController
   end
 
   def make_computer_turn(player)
-    first_spot = @game_logic.get_first_spot_available
-    computer_selection = player.get_move(first_spot)
+    computer_selection = @game_logic.get_first_spot_available
     @user_interface.display_computer_player_selection(player.marker, computer_selection)
     @game_logic.mark_game_board(player.marker, computer_selection)
     @user_interface.display_game_board(@game_logic.get_game_board)
@@ -118,6 +117,12 @@ class GameController
   end
 
   def load_game
+    @user_interface.display_welcome_message
+    player_one_marker = get_player_marker('one')
+    player_two_marker = get_player_two_marker(player_one_marker)
+    @game_logic = TicTacToeWP::GameLogic.new(player_one_marker, player_two_marker)
+    @player_one = @game_logic.create_player(player_one_marker)
+    @player_two = @game_logic.create_player(player_two_marker)
     display_start_game_text
     case get_game_type
     when 1
@@ -128,6 +133,40 @@ class GameController
       computer_vs_human_game
     else
       computer_vs_computer_game
+    end
+  end
+
+  def get_player_one
+    @player_one
+  end
+
+  def get_player_two
+    @player_two
+  end
+
+  def get_marker_selection(player_one_or_two)
+    @user_interface.request_player_marker(player_one_or_two)
+  end
+
+  def get_player_marker(player_one_or_two)
+    marker = get_marker_selection(player_one_or_two)
+    if @game_logic.validate_marker?(marker) == false
+      @user_interface.display_marker_error_message
+      get_player_marker(player_one_or_two)
+    else
+      @user_interface.display_validated_marker_message(player_one_or_two, marker)
+      marker
+    end
+  end
+
+  def get_player_two_marker(player_one_marker)
+    player_two = 'two'
+    marker = get_player_marker(player_two)
+    if @game_logic.duplicate_marker?(player_one_marker, marker) == true
+      @user_interface.display_duplicate_marker_error_message
+      get_player_two_marker(player_one_marker)
+    else
+      marker
     end
   end
 end

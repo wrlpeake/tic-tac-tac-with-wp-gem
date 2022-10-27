@@ -15,9 +15,11 @@ describe UserInterface do
   end
 
   it 'should display simple instructions explaining how to play' do
+    player_one = 'X'
+    player_two = 'O'
     expect do
-      @user_interface.display_instructions
-    end.to output("This is a two-player game. The first player will be the 'X' team, the second player will be 'O' team.\n\n" \
+      @user_interface.display_instructions(player_one, player_two)
+    end.to output("This is a two-player game. The first player will be the #{player_one} team, the second player will be #{player_two} team.\n\n" \
                   "The aim of the game is to get three of your symbol in a row, taking in turns to select your spot on a 3x3 board.\n\n" \
                   "Choose numbers 1-9 to select your spot on the board\n\n").to_stdout
   end
@@ -37,9 +39,11 @@ describe UserInterface do
   it "should confirm the computer player's selection to the command line" do
     player = 'X'
     first_spot = 1
+    computer_thinking_message = /\nComputer Player #{player} is thinking...\n\n/
+    computer_selected_message = /\nComputer Player #{player}, has selected: #{first_spot}\n\n/
     expect do
       @user_interface.display_computer_player_selection(player, first_spot)
-    end.to output("\nComputer Player #{player}, has selected: #{first_spot}\n\n").to_stdout
+    end.to output(computer_selected_message && computer_thinking_message).to_stdout
   end
 
   it 'should request and receive an integer between 1-9 from the player' do
@@ -110,5 +114,36 @@ describe UserInterface do
     expect do
       @user_interface.display_validate_game_type_selection(option)
     end.to output("\nYou have selected Option #{option}\n\n").to_stdout
+  end
+
+  it 'should request a marker for the players' do
+    input_string = '£'
+    input = StringIO.new(input_string)
+    $stdin = input
+    $stdout = StringIO.new
+
+    marker = @user_interface.request_player_marker('one')
+
+    expect(marker).to eql input_string
+  end
+
+  it 'should display a error message saying you cannot choose a marker as a number' do
+    expect do
+      @user_interface.display_marker_error_message
+    end.to output("\nError, you cannot choose a number. Please select again\n\n").to_stdout
+  end
+
+  it 'should display a validation message confirming the marker' do
+    player_one = 'one'
+    marker = 'X'
+    expect do
+      @user_interface.display_validated_marker_message(player_one, marker)
+    end.to output("\nPlayer #{player_one} has chosen the marker: #{marker}\n\n").to_stdout
+  end
+
+  it 'should display an error message when player two tries to choose the same marker as player one' do
+    expect do
+      @user_interface.display_duplicate_marker_error_message
+    end.to output("\nYou cannot choose the same marker as Player One, please choose again.\n\n").to_stdout
   end
 end

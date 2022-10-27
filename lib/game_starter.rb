@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/game_controller'
+require_relative '../lib/user_interface'
 
 class GameStarter
   def initialize

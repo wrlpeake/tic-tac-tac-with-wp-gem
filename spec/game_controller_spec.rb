@@ -6,6 +6,9 @@ require 'stringio'
 describe GameController do
   before(:each) do
     @game_controller = GameController.new
+    @player_one = @game_controller.get_player_one
+    @player_two = @game_controller.get_player_two
+    $stdout = StringIO.new
   end
 
   it 'scenario: can play a complete computer v computer game' do
@@ -13,7 +16,7 @@ describe GameController do
     # When the game loads, it should play a computer v computer game
     # Then it should complete the game and displaying the winning message
     winning_message = /Winner! The game will now end. Thanks for playing./
-
+    allow(@game_controller).to receive(:get_player_marker).and_return('X', 'Y')
     allow(@game_controller).to receive(:get_game_type).and_return(4)
     expect do
       @game_controller.load_game
@@ -27,6 +30,7 @@ describe GameController do
     # Then the human player should win and the game display the winning message
     winning_message = /Winner! The game will now end. Thanks for playing./
 
+    allow(@game_controller).to receive(:get_player_marker).and_return('Y', 'Z')
     allow(@game_controller).to receive(:get_game_type).and_return(2)
 
     allow(@game_controller).to receive(:get_human_selection).and_return(1, 5, 9)
@@ -43,6 +47,7 @@ describe GameController do
     # Then the human player should win and the game display the winning message
     winning_message = /Winner! The game will now end. Thanks for playing./
 
+    allow(@game_controller).to receive(:get_player_marker).and_return('£', '$')
     allow(@game_controller).to receive(:get_game_type).and_return(3)
     allow(@game_controller).to receive(:get_human_selection).and_return(3, 5, 7)
 
@@ -58,7 +63,7 @@ describe GameController do
     #   and take the input of 2 and 7 for the human player O
     # Then the human player X should win and the game display the winning message
     winning_message = /Winner! The game will now end. Thanks for playing./
-
+    allow(@game_controller).to receive(:get_player_marker).and_return('X', 'O')
     allow(@game_controller).to receive(:get_game_type).and_return(1)
     allow(@game_controller).to receive(:get_human_selection).and_return(1, 2, 5, 7, 9)
 
@@ -74,7 +79,7 @@ describe GameController do
     #   and take the input of 3, 4, 8, and 9 for the human player O
     # Then the game should be tied and the tie game message displayed
     tie_game_message = /Tie Game. The game will now end. Thanks for playing./
-
+    allow(@game_controller).to receive(:get_player_marker).and_return('£', '$')
     allow(@game_controller).to receive(:get_game_type).and_return(1)
     allow(@game_controller).to receive(:get_human_selection).and_return(1, 3, 2, 4, 5, 8, 6, 9, 7)
 
@@ -110,6 +115,7 @@ describe GameController do
   end
 
   it 'get_game_type should request the game type again when given wrong input' do
+    @game_logic = TicTacToeWP::GameLogic.new('X', 'O')
     wrong_game_option_one = 7
     wrong_game_option_two = 14
     right_game_option = 2
@@ -121,7 +127,6 @@ describe GameController do
   end
 
   it 'make_human_turn should display the validated player selection after marking the game board' do
-    @player_one = Player.new('X')
     human_selection = 7
     validated_player_selection_message = /Player #{@player_one.marker}, has selected: #{human_selection}/
 
@@ -133,7 +138,6 @@ describe GameController do
   end
 
   it 'make_human_turn should request input again if the position is already taken' do
-    @player_two = Player.new('O')
     first_selection = 7
     repeated_selection = 7
     second_selection = 9
@@ -149,7 +153,6 @@ describe GameController do
   end
 
   it 'make_human_turn should request input again if the input is not an integer between 1-9' do
-    @player_two = Player.new('O')
     invalid_input = 'foobar'
     valid_input = 4
     invalid_input_message = /Error: not an integer between 1 and 9. Please choose again./
@@ -159,5 +162,35 @@ describe GameController do
     expect do
       @game_controller.make_human_turn(@player_two)
     end.to output(invalid_input_message).to_stdout
+  end
+
+  it 'should get the marker from the user and return the marker if it is not a number' do
+    player = 'one'
+    marker = '$'
+
+    allow(@game_controller).to receive(:get_marker_selection).and_return(marker)
+
+    expect(@game_controller.get_player_marker(player)).to eql marker
+  end
+
+  it 'should request the marker again if the marker is a number' do
+    player = 'two'
+    invalid_marker = '9'
+    valid_marker = 'X'
+
+    allow(@game_controller).to receive(:get_marker_selection).and_return(invalid_marker, valid_marker)
+
+    expect(@game_controller.get_player_marker(player)).to eql valid_marker
+  end
+
+  it 'should check that player one and player two do not have the same marker' do
+    player_one_marker = 'X'
+    invalid_player_two_marker = 'X'
+    valid_player_two_marker = 'Y'
+
+    allow(@game_controller).to receive(:get_marker_selection).and_return(invalid_player_two_marker,
+                                                                         valid_player_two_marker)
+
+    expect(@game_controller.get_player_two_marker(player_one_marker)).to eql valid_player_two_marker
   end
 end

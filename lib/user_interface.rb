@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
+require 'io/console'
+
 class UserInterface
   def display_welcome_message
     puts "Welcome to Tic-Tac-Toe (AKA Knoughts & Crosses)\n\n"
   end
 
-  def display_instructions
-    puts "This is a two-player game. The first player will be the 'X' team, the second player will be 'O' team.\n\n" \
+  def display_instructions(player_one, player_two)
+    puts "This is a two-player game. The first player will be the #{player_one} team, the second player will be #{player_two} team.\n\n" \
          "The aim of the game is to get three of your symbol in a row, taking in turns to select your spot on a 3x3 board.\n\n" \
          "Choose numbers 1-9 to select your spot on the board\n\n"
   end
@@ -25,6 +27,8 @@ class UserInterface
   end
 
   def display_computer_player_selection(player, first_spot)
+    puts "\nComputer Player #{player} is thinking...\n\n"
+    sleep 2
     puts "\nComputer Player #{player}, has selected: #{first_spot}\n\n"
   end
 
@@ -68,5 +72,23 @@ class UserInterface
 
   def display_validate_game_type_selection(option)
     puts "\nYou have selected Option #{option}\n\n"
+  end
+
+  def request_player_marker(player_one_or_two)
+    puts "Please select a marker for Player #{player_one_or_two}, this will be first character only and not a number"
+    marker = gets.chomp
+    marker[0]
+  end
+
+  def display_marker_error_message
+    puts "\nError, you cannot choose a number. Please select again\n\n"
+  end
+
+  def display_validated_marker_message(player_one_or_two, marker)
+    puts "\nPlayer #{player_one_or_two} has chosen the marker: #{marker}\n\n"
+  end
+
+  def display_duplicate_marker_error_message
+    puts "\nYou cannot choose the same marker as Player One, please choose again.\n\n"
   end
 end
