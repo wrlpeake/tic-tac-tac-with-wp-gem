@@ -18,7 +18,7 @@ jobs:
         with:
           ruby-version: '3.1'
       - name: Install gem
-        run: gem install tic_tac_toe_wp-0.1.2.gem
+        run: gem install tic_tac_toe_wp
       - name: Install dependencies
         run: bundle install
       - name: Run tests
