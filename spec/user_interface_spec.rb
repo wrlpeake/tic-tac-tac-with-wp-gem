@@ -39,9 +39,11 @@ describe UserInterface do
   it "should confirm the computer player's selection to the command line" do
     player = 'X'
     first_spot = 1
+    computer_thinking_message = /\nComputer Player #{player} is thinking...\n\n/
+    computer_selected_message = /\nComputer Player #{player}, has selected: #{first_spot}\n\n/
     expect do
       @user_interface.display_computer_player_selection(player, first_spot)
-    end.to output("\nComputer Player #{player}, has selected: #{first_spot}\n\n").to_stdout
+    end.to output(computer_selected_message && computer_thinking_message).to_stdout
   end
 
   it 'should request and receive an integer between 1-9 from the player' do

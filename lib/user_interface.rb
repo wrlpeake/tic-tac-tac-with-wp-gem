@@ -27,6 +27,8 @@ class UserInterface
   end
 
   def display_computer_player_selection(player, first_spot)
+    puts "\nComputer Player #{player} is thinking...\n\n"
+    sleep 2
     puts "\nComputer Player #{player}, has selected: #{first_spot}\n\n"
   end
 

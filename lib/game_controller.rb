@@ -5,10 +5,12 @@ require_relative '../lib/user_interface'
 
 class GameController
   def initialize
+    @default_marker_x = 'X'
+    @default_marker_o = 'O'
     @user_interface = UserInterface.new
-    @game_logic = TicTacToeWP::GameLogic.new('X', 'O')
-    @player_one = @game_logic.create_player('X')
-    @player_two = @game_logic.create_player('O')
+    @game_logic = TicTacToeWP::GameLogic.new(@default_marker_x, @default_marker_o)
+    @player_one = @game_logic.create_player(@default_marker_x)
+    @player_two = @game_logic.create_player(@default_marker_o)
   end
 
   def display_start_game_text
@@ -158,13 +160,12 @@ class GameController
   end
 
   def get_player_two_marker(player_one_marker)
-    player = 'two'
-    marker = get_player_marker(player)
+    player_two = 'two'
+    marker = get_player_marker(player_two)
     if @game_logic.duplicate_marker?(player_one_marker, marker) == true
       @user_interface.display_duplicate_marker_error_message
       get_player_two_marker(player_one_marker)
     else
-      @user_interface.display_validated_marker_message(player, marker)
       marker
     end
   end
